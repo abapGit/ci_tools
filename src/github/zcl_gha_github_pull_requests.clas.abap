@@ -1,23 +1,40 @@
-class ZCL_GHA_GITHUB_PULL_REQUESTS definition
-  public
-  create public .
+CLASS zcl_gha_github_pull_requests DEFINITION
+  PUBLIC
+  CREATE PROTECTED
 
-public section.
+  GLOBAL FRIENDS zcl_gha_github_factory .
 
-  interfaces ZIF_GHA_GITHUB_PULL_REQUESTS .
-protected section.
+  PUBLIC SECTION.
 
-  methods PARSE_LIST
-    importing
-      !IV_JSON type STRING
-    returning
-      value(RT_LIST) type ZIF_GHA_GITHUB_PULL_REQUESTS=>TY_LIST_TT .
-private section.
+    INTERFACES zif_gha_github_pull_requests .
+  PROTECTED SECTION.
+
+    DATA mv_owner TYPE string .
+    DATA mv_repo TYPE string .
+
+    METHODS parse_list
+      IMPORTING
+        !iv_json       TYPE string
+      RETURNING
+        VALUE(rt_list) TYPE zif_gha_github_pull_requests=>ty_list_tt .
+    METHODS constructor
+      IMPORTING
+        !iv_owner TYPE string
+        !iv_repo  TYPE string .
+  PRIVATE SECTION.
 ENDCLASS.
 
 
 
 CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
+
+
+  METHOD constructor.
+
+    mv_owner = iv_owner.
+    mv_repo = iv_repo.
+
+  ENDMETHOD.
 
 
   METHOD parse_list.
@@ -41,12 +58,35 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD zif_gha_github_pull_requests~create.
+
+    DATA(lo_client) = zcl_gha_http_client=>create_by_url(
+      |https://api.github.com/repos/{ mv_owner }/{ mv_repo }/pulls| ).
+
+    lo_client->set_method( 'POST' ).
+
+    DATA(lv_json) = |\{"title": "{ iv_title }",\n| &&
+      |"head": "{ iv_head }",\n| &&
+      |"base": "{ iv_base }"\}\n|.
+
+    DATA(li_response) = lo_client->send_receive( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    IF lv_code <> 201.
+      BREAK-POINT.
+    ENDIF.
+
+    DATA(lv_cdata) = li_response->get_cdata( ).
+
+  ENDMETHOD.
+
+
   METHOD zif_gha_github_pull_requests~list.
 
 * todo, add parameters: state + head + base + sort + direction
 
     DATA(lo_client) = zcl_gha_http_client=>create_by_url(
-      |https://api.github.com/repos/{ iv_owner }/{ iv_repo }/pulls| ).
+      |https://api.github.com/repos/{ mv_owner }/{ mv_repo }/pulls| ).
 
     DATA(li_response) = lo_client->send_receive( ).
 

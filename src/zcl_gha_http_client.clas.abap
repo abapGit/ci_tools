@@ -12,9 +12,9 @@ CLASS zcl_gha_http_client DEFINITION
     METHODS send_receive
       RETURNING
         VALUE(ri_response) TYPE REF TO if_http_response .
-    METHODS set_data
+    METHODS set_cdata
       IMPORTING
-        !iv_data TYPE xstring .
+        !iv_data TYPE string .
     METHODS set_header_field
       IMPORTING
         !iv_name  TYPE string
@@ -83,9 +83,9 @@ CLASS ZCL_GHA_HTTP_CLIENT IMPLEMENTATION.
   ENDMETHOD.
 
 
-  METHOD set_data.
+  METHOD set_cdata.
 
-    mi_client->request->set_data( iv_data ).
+    mi_client->request->set_cdata( iv_data ).
 
   ENDMETHOD.
 
