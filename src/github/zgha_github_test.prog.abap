@@ -4,7 +4,8 @@ PARAMETERS: p_token TYPE text100 OBLIGATORY,
             p_plis  TYPE c RADIOBUTTON GROUP g1,
             p_pcre  TYPE c RADIOBUTTON GROUP g1,
             p_clis  TYPE c RADIOBUTTON GROUP g1,
-            p_pclo  TYPE c RADIOBUTTON GROUP g1.
+            p_pclo  TYPE c RADIOBUTTON GROUP g1,
+            p_pmer  TYPE c RADIOBUTTON GROUP g1.
 
 START-OF-SELECTION.
   PERFORM run.
@@ -38,7 +39,13 @@ FORM run.
         iv_owner = 'abapGit'
         iv_repo  = 'abap_git_hosts_apis' )->update(
           iv_number = 4
-          iv_state = 'closed' ).
+          iv_state  = 'closed' ).
+    WHEN p_pmer.
+      zcl_gha_github_factory=>get_pull_requests(
+        iv_owner = 'abapGit'
+        iv_repo  = 'abap_git_hosts_apis' )->merge(
+          iv_number       = 4
+          iv_merge_method = 'squash' ).
   ENDCASE.
 
 ENDFORM.

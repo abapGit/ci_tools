@@ -125,6 +125,27 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD zif_gha_github_pull_requests~merge.
+
+    DATA(lo_client) = zcl_gha_http_client=>create_by_url(
+      |https://api.github.com/repos/{ mv_owner }/{ mv_repo }/pulls/{ iv_number }/merge| ).
+
+    lo_client->set_method( 'PUT' ).
+
+    DATA(lv_json) = |\{"merge_method": "{ iv_merge_method }"\}\n|.
+
+    lo_client->set_cdata( lv_json ).
+
+    DATA(li_response) = lo_client->send_receive( ).
+
+    DATA(lv_cdata) = li_response->get_cdata( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    ASSERT lv_code = 200. " todo, error handling
+
+  ENDMETHOD.
+
+
   METHOD zif_gha_github_pull_requests~update.
 
     DATA(lo_client) = zcl_gha_http_client=>create_by_url(

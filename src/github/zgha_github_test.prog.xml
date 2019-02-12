@@ -43,6 +43,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_PMER</KEY>
+     <ENTRY>Merge Pull Request</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_TOKEN</KEY>
      <ENTRY>Token</ENTRY>
      <LENGTH>13</LENGTH>
