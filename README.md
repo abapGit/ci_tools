@@ -1,6 +1,10 @@
 # abap_git_hosts_apis
 Call git hosts APIs from ABAP
 
+Limit external dependencies
+
+740sp08?
+
 Work in progress
 
 * [GitHub](https://developer.github.com/v3/)
