@@ -118,10 +118,30 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
     ASSERT lv_code = 200. "  todo
 
-* todo, handle rate limit error
 * todo, pagination?
 
     rt_list = parse_list( lv_data ).
+
+  ENDMETHOD.
+
+
+  METHOD zif_gha_github_pull_requests~update.
+
+    DATA(lo_client) = zcl_gha_http_client=>create_by_url(
+      |https://api.github.com/repos/{ mv_owner }/{ mv_repo }/pulls/{ iv_number }| ).
+
+    lo_client->set_method( 'PATCH' ).
+
+    DATA(lv_json) = |\{"state": "{ iv_state }"\}\n|.
+
+    lo_client->set_cdata( lv_json ).
+
+    DATA(li_response) = lo_client->send_receive( ).
+
+    DATA(lv_cdata) = li_response->get_cdata( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    ASSERT lv_code = 200. " todo, error handling
 
   ENDMETHOD.
 ENDCLASS.

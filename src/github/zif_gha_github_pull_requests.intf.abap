@@ -1,7 +1,6 @@
 INTERFACE zif_gha_github_pull_requests
   PUBLIC .
 
-
   TYPES:
     BEGIN OF ty_list,
       number   TYPE i,
@@ -31,4 +30,9 @@ INTERFACE zif_gha_github_pull_requests
   METHODS list
     RETURNING
       VALUE(rt_list) TYPE ty_list_tt .
+  METHODS update
+    IMPORTING
+      !iv_number TYPE i
+      !iv_state  TYPE string .
+
 ENDINTERFACE.

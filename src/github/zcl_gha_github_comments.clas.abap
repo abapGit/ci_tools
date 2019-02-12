@@ -53,7 +53,19 @@ CLASS ZCL_GHA_GITHUB_COMMENTS IMPLEMENTATION.
 
   METHOD zif_gha_github_comments~create.
 
-    ASSERT 0 = 1. " todo
+    DATA(lo_client) = zcl_gha_http_client=>create_by_url(
+      |https://api.github.com/repos/{ mv_owner }/{ mv_repo }/issues/{ iv_issue_number }/comments| ).
+
+    lo_client->set_method( 'POST' ).
+
+    DATA(lv_json) = |\{"body": "{ iv_body }"\}\n|.
+
+    lo_client->set_cdata( lv_json ).
+
+    DATA(li_response) = lo_client->send_receive( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    ASSERT lv_code = 201. " todo, error handling
 
   ENDMETHOD.
 
