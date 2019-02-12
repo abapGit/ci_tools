@@ -121,9 +121,7 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
 *    li_response->get_header_fields( CHANGING fields = lt_fields ).
 
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
-    IF lv_code <> 200.
-      BREAK-POINT.
-    ENDIF.
+    ASSERT lv_code = 200. "  todo
 
 * todo, handle rate limit error
 * todo, pagination?

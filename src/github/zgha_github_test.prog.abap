@@ -26,7 +26,7 @@ FORM run.
 
   DATA(lt_list) = zcl_gha_github_factory=>get_comments(
       iv_owner = 'abapGit'
-      iv_repo  = 'abap_git_hosts_api' )->list( 1 ).
+      iv_repo  = 'abap_git_hosts_apis' )->list( 3 ).
 
   BREAK-POINT.
 

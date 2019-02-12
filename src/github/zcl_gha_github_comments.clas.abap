@@ -12,6 +12,11 @@ CLASS zcl_gha_github_comments DEFINITION
     DATA mv_owner TYPE string .
     DATA mv_repo TYPE string .
 
+    METHODS parse_list
+      IMPORTING
+        !iv_json       TYPE string
+      RETURNING
+        VALUE(rt_list) TYPE zif_gha_github_comments=>ty_list_tt .
     METHODS constructor
       IMPORTING
         !iv_owner TYPE string
@@ -28,6 +33,20 @@ CLASS ZCL_GHA_GITHUB_COMMENTS IMPLEMENTATION.
 
     mv_owner = iv_owner.
     mv_repo = iv_repo.
+
+  ENDMETHOD.
+
+
+  METHOD parse_list.
+
+    DATA(lo_json) = NEW zcl_gha_json_parser( iv_json ).
+
+    LOOP AT lo_json->members( '' ) INTO DATA(lv_member) WHERE NOT table_line IS INITIAL.
+      APPEND VALUE #(
+        id   = lo_json->value( |/{ lv_member }/id| )
+        body = lo_json->value( |/{ lv_member }/body| )
+        ) TO rt_list.
+    ENDLOOP.
 
   ENDMETHOD.
 
@@ -56,6 +75,14 @@ CLASS ZCL_GHA_GITHUB_COMMENTS IMPLEMENTATION.
     DATA(li_response) = lo_client->send_receive( ).
 
     DATA(lv_data) = li_response->get_cdata( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    ASSERT lv_code = 200. "  todo
+
+* todo, handle rate limit error
+* todo, pagination?
+
+    rt_list = parse_list( lv_data ).
 
     BREAK-POINT.
 
