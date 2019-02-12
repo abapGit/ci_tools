@@ -4,6 +4,10 @@ CLASS zcl_gha_http_client DEFINITION
 
   PUBLIC SECTION.
 
+    CLASS-METHODS add_header
+      IMPORTING
+        !iv_name  TYPE string
+        !iv_value TYPE string .
     CLASS-METHODS create_by_url
       IMPORTING
         !iv_url          TYPE string
@@ -25,12 +29,23 @@ CLASS zcl_gha_http_client DEFINITION
   PROTECTED SECTION.
 
     DATA mi_client TYPE REF TO if_http_client .
+    CLASS-DATA mv_name TYPE string .
+    CLASS-DATA mv_value TYPE string .
   PRIVATE SECTION.
 ENDCLASS.
 
 
 
 CLASS ZCL_GHA_HTTP_CLIENT IMPLEMENTATION.
+
+
+  METHOD add_header.
+
+* todo, add to private table intead
+    mv_name = iv_name.
+    mv_value = iv_value.
+
+  ENDMETHOD.
 
 
   METHOD create_by_url.
@@ -53,6 +68,12 @@ CLASS ZCL_GHA_HTTP_CLIENT IMPLEMENTATION.
     ASSERT sy-subrc = 0. " todo
 
     ro_client->mi_client->propertytype_logon_popup = if_http_client=>co_disabled.
+
+    IF NOT mv_name IS INITIAL.
+      ro_client->set_header_field(
+        iv_name  = mv_name
+        iv_value = mv_value ).
+    ENDIF.
 
   ENDMETHOD.
 

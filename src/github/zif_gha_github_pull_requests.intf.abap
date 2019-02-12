@@ -19,9 +19,15 @@ INTERFACE zif_gha_github_pull_requests
 
   METHODS create
     IMPORTING
-      !iv_title TYPE string
-      !iv_head  TYPE string
-      !iv_base  TYPE string .
+      !iv_title        TYPE string
+      !iv_head         TYPE string
+      !iv_base         TYPE string
+      !iv_body         TYPE string OPTIONAL
+    RETURNING
+      VALUE(rv_number) TYPE i .
+  METHODS get
+    IMPORTING
+      !iv_number TYPE i .
   METHODS list
     RETURNING
       VALUE(rt_list) TYPE ty_list_tt .

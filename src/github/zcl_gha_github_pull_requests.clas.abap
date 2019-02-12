@@ -12,6 +12,11 @@ CLASS zcl_gha_github_pull_requests DEFINITION
     DATA mv_owner TYPE string .
     DATA mv_repo TYPE string .
 
+    METHODS parse_create
+      IMPORTING
+        !iv_json         TYPE string
+      RETURNING
+        VALUE(rv_number) TYPE i .
     METHODS parse_list
       IMPORTING
         !iv_json       TYPE string
@@ -33,6 +38,15 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
 
     mv_owner = iv_owner.
     mv_repo = iv_repo.
+
+  ENDMETHOD.
+
+
+  METHOD parse_create.
+
+    DATA(lo_json) = NEW zcl_gha_json_parser( iv_json ).
+
+    rv_number = lo_json->value_integer( '/id' ).
 
   ENDMETHOD.
 
@@ -67,16 +81,27 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
 
     DATA(lv_json) = |\{"title": "{ iv_title }",\n| &&
       |"head": "{ iv_head }",\n| &&
+      |"body": "{ iv_body }",\n| &&
       |"base": "{ iv_base }"\}\n|.
+    lo_client->set_cdata( lv_json ).
 
     DATA(li_response) = lo_client->send_receive( ).
+
+    DATA(lv_cdata) = li_response->get_cdata( ).
 
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
     IF lv_code <> 201.
       BREAK-POINT.
     ENDIF.
 
-    DATA(lv_cdata) = li_response->get_cdata( ).
+    rv_number = parse_create( lv_cdata ).
+
+  ENDMETHOD.
+
+
+  METHOD zif_gha_github_pull_requests~get.
+
+    ASSERT 0 = 1. " todo
 
   ENDMETHOD.
 
@@ -92,8 +117,8 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
 
     DATA(lv_data) = li_response->get_cdata( ).
 
-    DATA: lt_fields TYPE tihttpnvp.
-    li_response->get_header_fields( CHANGING fields = lt_fields ).
+*    DATA: lt_fields TYPE tihttpnvp.
+*    li_response->get_header_fields( CHANGING fields = lt_fields ).
 
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
     IF lv_code <> 200.
