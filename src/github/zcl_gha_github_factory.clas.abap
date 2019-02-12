@@ -1,14 +1,14 @@
-class ZCL_GHA_GITHUB_FACTORY definition
-  public
-  create public .
+CLASS zcl_gha_github_factory DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  methods GET_PULL_REQUESTS
-    returning
-      value(RI_INSTANCE) type ref to ZIF_GHA_GITHUB_PULL_REQUESTS .
-protected section.
-private section.
+    CLASS-METHODS get_pull_requests
+      RETURNING
+        VALUE(ri_instance) TYPE REF TO zif_gha_github_pull_requests .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 
