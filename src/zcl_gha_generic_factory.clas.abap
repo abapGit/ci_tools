@@ -1,12 +1,12 @@
-class ZCL_GHA_GENERIC_FACTORY definition
-  public
-  create public .
+CLASS zcl_gha_generic_factory DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  class-methods GET_PULL_REQUESTS .
-protected section.
-private section.
+    CLASS-METHODS get_pull_requests .
+  PROTECTED SECTION.
+  PRIVATE SECTION.
 ENDCLASS.
 
 
@@ -14,6 +14,6 @@ ENDCLASS.
 CLASS ZCL_GHA_GENERIC_FACTORY IMPLEMENTATION.
 
 
-  method GET_PULL_REQUESTS.
-  endmethod.
+  METHOD get_pull_requests.
+  ENDMETHOD.
 ENDCLASS.
