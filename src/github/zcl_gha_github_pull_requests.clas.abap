@@ -90,9 +90,7 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
     DATA(lv_cdata) = li_response->get_cdata( ).
 
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
-    IF lv_code <> 201.
-      BREAK-POINT.
-    ENDIF.
+    ASSERT lv_code = 201. " todo, error handling
 
     rv_number = parse_create( lv_cdata ).
 
@@ -116,9 +114,6 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
     DATA(li_response) = lo_client->send_receive( ).
 
     DATA(lv_data) = li_response->get_cdata( ).
-
-*    DATA: lt_fields TYPE tihttpnvp.
-*    li_response->get_header_fields( CHANGING fields = lt_fields ).
 
     li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
     ASSERT lv_code = 200. "  todo

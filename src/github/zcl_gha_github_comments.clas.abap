@@ -84,7 +84,5 @@ CLASS ZCL_GHA_GITHUB_COMMENTS IMPLEMENTATION.
 
     rt_list = parse_list( lv_data ).
 
-    BREAK-POINT.
-
   ENDMETHOD.
 ENDCLASS.
