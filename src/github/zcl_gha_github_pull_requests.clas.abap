@@ -1,12 +1,16 @@
 CLASS zcl_gha_github_pull_requests DEFINITION
   PUBLIC
   CREATE PROTECTED
-
   GLOBAL FRIENDS zcl_gha_github_factory .
 
   PUBLIC SECTION.
 
     INTERFACES zif_gha_github_pull_requests .
+
+    METHODS constructor
+      IMPORTING
+        !iv_owner TYPE string
+        !iv_repo  TYPE string .
   PROTECTED SECTION.
 
     DATA mv_owner TYPE string .
@@ -22,10 +26,6 @@ CLASS zcl_gha_github_pull_requests DEFINITION
         !iv_json       TYPE string
       RETURNING
         VALUE(rt_list) TYPE zif_gha_github_pull_requests=>ty_list_tt .
-    METHODS constructor
-      IMPORTING
-        !iv_owner TYPE string
-        !iv_repo  TYPE string .
   PRIVATE SECTION.
 ENDCLASS.
 

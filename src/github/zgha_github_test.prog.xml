@@ -4,8 +4,6 @@
   <asx:values>
    <PROGDIR>
     <NAME>ZGHA_GITHUB_TEST</NAME>
-    <STATE>A</STATE>
-    <VARCL>X</VARCL>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
