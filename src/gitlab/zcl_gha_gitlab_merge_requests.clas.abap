@@ -1,12 +1,11 @@
-class ZCL_GHA_GITLAB_MERGE_REQUESTS definition
-  public
-  create protected
+CLASS zcl_gha_gitlab_merge_requests DEFINITION
+  PUBLIC
+  CREATE PROTECTED
+  GLOBAL FRIENDS zcl_gha_gitlab_factory .
 
-  global friends ZCL_GHA_GITLAB_FACTORY .
+  PUBLIC SECTION.
 
-public section.
-
-  interfaces ZIF_GHA_GITLAB_MERGE_REQUESTS .
+    INTERFACES zif_gha_gitlab_merge_requests .
   PROTECTED SECTION.
 
     METHODS parse_list

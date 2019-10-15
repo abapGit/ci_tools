@@ -1,19 +1,19 @@
-class ZCL_GHA_GITLAB_FACTORY definition
-  public
-  create public .
+CLASS zcl_gha_gitlab_factory DEFINITION
+  PUBLIC
+  CREATE PUBLIC .
 
-public section.
+  PUBLIC SECTION.
 
-  class-methods GET_MERGE_REQUESTS
-    returning
-      value(RI_INSTANCE) type ref to ZIF_GHA_GITLAB_MERGE_REQUESTS .
-  class-methods GET_NOTES
-    importing
-      !IV_PROJECT_ID type I
-    returning
-      value(RI_NOTES) type ref to ZIF_GHA_GITLAB_NOTES .
+    CLASS-METHODS get_merge_requests
+      RETURNING
+        VALUE(ri_instance) TYPE REF TO zif_gha_gitlab_merge_requests .
+    CLASS-METHODS get_notes
+      IMPORTING
+        !iv_project_id  TYPE i
+      RETURNING
+        VALUE(ri_notes) TYPE REF TO zif_gha_gitlab_notes .
   PROTECTED SECTION.
-private section.
+  PRIVATE SECTION.
 ENDCLASS.
 
 

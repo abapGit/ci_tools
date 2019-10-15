@@ -1,26 +1,25 @@
-class ZCL_GHA_GITLAB_NOTES definition
-  public
-  create protected
+CLASS zcl_gha_gitlab_notes DEFINITION
+  PUBLIC
+  CREATE PROTECTED
+  GLOBAL FRIENDS zcl_gha_gitlab_factory .
 
-  global friends ZCL_GHA_GITLAB_FACTORY .
+  PUBLIC SECTION.
 
-public section.
+    INTERFACES zif_gha_gitlab_notes .
 
-  interfaces ZIF_GHA_GITLAB_NOTES .
+    METHODS constructor
+      IMPORTING
+        !iv_project_id TYPE i .
+  PROTECTED SECTION.
 
-  methods CONSTRUCTOR
-    importing
-      !IV_PROJECT_ID type I .
-protected section.
+    DATA mv_project_id TYPE i .
 
-  data MV_PROJECT_ID type I .
-
-  methods PARSE
-    importing
-      !IV_JSON type STRING
-    returning
-      value(RT_LIST) type ZIF_GHA_GITLAB_NOTES=>TY_LIST_TT .
-private section.
+    METHODS parse
+      IMPORTING
+        !iv_json       TYPE string
+      RETURNING
+        VALUE(rt_list) TYPE zif_gha_gitlab_notes=>ty_list_tt .
+  PRIVATE SECTION.
 ENDCLASS.
 
 
