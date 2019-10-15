@@ -1,10 +1,12 @@
-CLASS zcl_gha_gitlab_merge_requests DEFINITION
-  PUBLIC
-  CREATE PUBLIC .
+class ZCL_GHA_GITLAB_MERGE_REQUESTS definition
+  public
+  create protected
 
-  PUBLIC SECTION.
+  global friends ZCL_GHA_GITLAB_FACTORY .
 
-    INTERFACES zif_gha_gitlab_merge_requests .
+public section.
+
+  interfaces ZIF_GHA_GITLAB_MERGE_REQUESTS .
   PROTECTED SECTION.
 
     METHODS parse_list
@@ -42,6 +44,8 @@ CLASS ZCL_GHA_GITLAB_MERGE_REQUESTS IMPLEMENTATION.
 
 
   METHOD zif_gha_gitlab_merge_requests~list.
+
+* todo: move IV_PROJECT_ID to constructor?
 
     IF NOT iv_state IS INITIAL.
       DATA(lv_query) = |?state={ iv_state }|.

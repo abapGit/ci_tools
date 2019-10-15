@@ -17,9 +17,9 @@
     </item>
     <item>
      <ID>S</ID>
-     <KEY>P_PCRE</KEY>
-     <ENTRY>todo</ENTRY>
-     <LENGTH>12</LENGTH>
+     <KEY>P_NLMR</KEY>
+     <ENTRY>List notes for MR</ENTRY>
+     <LENGTH>25</LENGTH>
     </item>
     <item>
      <ID>S</ID>
