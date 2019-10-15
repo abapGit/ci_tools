@@ -3,7 +3,7 @@ Call git hosts APIs from ABAP
 
 Limit external dependencies
 
-740sp08?
+740sp08
 
 Work in progress
 
