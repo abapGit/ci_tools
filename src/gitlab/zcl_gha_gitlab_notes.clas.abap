@@ -51,7 +51,24 @@ CLASS ZCL_GHA_GITLAB_NOTES IMPLEMENTATION.
 
   METHOD zif_gha_gitlab_notes~create_merge_request.
 
-* todo
+    DATA(lo_client) = zcl_gha_http_client=>create_by_url(
+      |https://gitlab.com/api/v4/projects/{ mv_project_id }/merge_requests/{ iv_merge_request_iid }/notes| ).
+
+    lo_client->set_method( 'POST' ).
+
+    lo_client->set_header_field(
+      iv_name  = 'content-type'
+      iv_value = 'application/json' ).
+
+    DATA(lv_json) = |\{"body": "{ iv_body }"\}\n|.
+
+    lo_client->set_cdata( lv_json ).
+
+    DATA(li_response) = lo_client->send_receive( ).
+
+    li_response->get_status( IMPORTING code = DATA(lv_code) reason = DATA(lv_reason) ).
+    DATA(lv_sdf) = li_response->get_cdata( ).
+    ASSERT lv_code = 201. " todo, error handling
 
   ENDMETHOD.
 

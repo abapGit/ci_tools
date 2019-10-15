@@ -2,7 +2,8 @@ REPORT zgha_gitlab_test.
 
 PARAMETERS: p_token TYPE text100 OBLIGATORY,
             p_plis  TYPE c RADIOBUTTON GROUP g1,
-            p_nlmr  TYPE c RADIOBUTTON GROUP g1.
+            p_nlmr  TYPE c RADIOBUTTON GROUP g1,
+            p_ncmr  TYPE c RADIOBUTTON GROUP g1.
 
 START-OF-SELECTION.
   PERFORM run.
@@ -22,7 +23,10 @@ FORM run.
         iv_state      = 'opened' ).
     WHEN p_nlmr.
       DATA(lt_nlist) = zcl_gha_gitlab_factory=>get_notes( 2248898 )->list_merge_request( 1 ).
-      BREAK-POINT.
+    WHEN p_ncmr.
+      zcl_gha_gitlab_factory=>get_notes( 2248898 )->create_merge_request(
+        iv_merge_request_iid = 1
+        iv_body              = |hello world| ).
   ENDCASE.
 
 ENDFORM.

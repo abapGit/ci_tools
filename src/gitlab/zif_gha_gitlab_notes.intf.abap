@@ -1,22 +1,22 @@
-interface ZIF_GHA_GITLAB_NOTES
-  public .
+INTERFACE zif_gha_gitlab_notes
+  PUBLIC .
 
 
-  types:
+  TYPES:
     BEGIN OF ty_list,
-           id   TYPE i,
-           body TYPE string,
-         END OF ty_list .
-  types:
+      id   TYPE i,
+      body TYPE string,
+    END OF ty_list .
+  TYPES:
     ty_list_tt TYPE STANDARD TABLE OF ty_list WITH EMPTY KEY .
 
-  methods CREATE_MERGE_REQUEST
-    importing
-      !IV_MERGE_REQUEST_IID type I
-      !IV_BODY type STRING .
-  methods LIST_MERGE_REQUEST
-    importing
-      !IV_MERGE_REQUEST_IID type I
-    returning
-      value(RT_LIST) type TY_LIST_TT .
-endinterface.
+  METHODS create_merge_request
+    IMPORTING
+      !iv_merge_request_iid TYPE i
+      !iv_body              TYPE string .
+  METHODS list_merge_request
+    IMPORTING
+      !iv_merge_request_iid TYPE i
+    RETURNING
+      VALUE(rt_list)        TYPE ty_list_tt .
+ENDINTERFACE.

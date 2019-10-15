@@ -17,6 +17,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_NCMR</KEY>
+     <ENTRY>Create note for MR</ENTRY>
+     <LENGTH>26</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_NLMR</KEY>
      <ENTRY>List notes for MR</ENTRY>
      <LENGTH>25</LENGTH>
