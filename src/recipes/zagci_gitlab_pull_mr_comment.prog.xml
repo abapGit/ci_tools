@@ -3,7 +3,7 @@
  <asx:abap xmlns:asx="http://www.sap.com/abapxml" version="1.0">
   <asx:values>
    <PROGDIR>
-    <NAME>ZAGCI_GITLAB_MR_COMMENT_PULL</NAME>
+    <NAME>ZAGCI_GITLAB_PULL_MR_COMMENT</NAME>
     <SUBC>1</SUBC>
     <RLOAD>E</RLOAD>
     <FIXPT>X</FIXPT>
