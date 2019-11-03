@@ -1,6 +1,12 @@
 INTERFACE zif_gha_github_pull_requests
   PUBLIC .
 
+  TYPES: BEGIN OF ty_branch,
+           ref       TYPE string,
+           sha       TYPE string,
+           html_url  TYPE string,
+           clone_url TYPE string,
+         END OF ty_branch.
 
   TYPES:
     BEGIN OF ty_list,
@@ -9,10 +15,8 @@ INTERFACE zif_gha_github_pull_requests
       state    TYPE string,
       html_url TYPE string,
       body     TYPE string,
-      base_ref TYPE string,
-      base_sha TYPE string,
-      head_ref TYPE string,
-      head_sha TYPE string,
+      base     TYPE ty_branch,
+      head     TYPE ty_branch,
     END OF ty_list .
   TYPES:
     ty_list_tt TYPE STANDARD TABLE OF ty_list WITH EMPTY KEY .
