@@ -16,6 +16,12 @@ CLASS zcl_gha_github_factory DEFINITION
         !iv_repo           TYPE string
       RETURNING
         VALUE(ri_instance) TYPE REF TO zif_gha_github_pull_requests .
+    CLASS-METHODS get_check_suites
+      IMPORTING
+        !iv_owner          TYPE string
+        !iv_repo           TYPE string
+      RETURNING
+        VALUE(ri_instance) TYPE REF TO zif_gha_github_check_suites .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -23,6 +29,15 @@ ENDCLASS.
 
 
 CLASS ZCL_GHA_GITHUB_FACTORY IMPLEMENTATION.
+
+
+  METHOD get_check_suites.
+
+    ri_instance = NEW zcl_gha_github_check_suites(
+      iv_owner = iv_owner
+      iv_repo  = iv_repo ).
+
+  ENDMETHOD.
 
 
   METHOD get_comments.
