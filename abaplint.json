@@ -4,7 +4,7 @@
     "skipGeneratedGatewayClasses": true,
     "skipGeneratedPersistentClasses": true,
     "skipGeneratedFunctionGroups": true,
-    "applyUnspecifiedRules": true
+    "applyUnspecifiedRules": false
   },
   "dependencies": [
     {
@@ -20,6 +20,14 @@
     "globalMacros": []
   },
   "rules": {
+    "abapdoc": false,
+    "chain_mainly_declarations": true,
+    "check_abstract": true,
+    "check_ddic": true,
+    "check_include": true,
+    "check_text_elements": true,
+    "type_begin_single_include": true,
+    "types_naming": true,
     "7bit_ascii": {
       "enabled": true,
       "exclude": [],
@@ -62,7 +70,7 @@
       "exclude": [],
       "reason": ""
     },
-    "check_variables": {
+    "check_syntax": {
       "enabled": true,
       "exclude": [],
       "reason": ""
@@ -277,6 +285,7 @@
     "method_length": {
       "enabled": true,
       "exclude": [],
+      "errorWhenEmpty": true,
       "reason": "",
       "statements": 100
     },
@@ -312,6 +321,7 @@
     "no_public_attributes": {
       "enabled": true,
       "exclude": [],
+      "allowReadOnly": false,
       "reason": ""
     },
     "object_naming": {
@@ -347,7 +357,8 @@
       "multiply": true,
       "move": true,
       "divide": true,
-      "requested": true
+      "requested": true,
+      "occurs": true
     },
     "parser_error": {
       "enabled": true,
