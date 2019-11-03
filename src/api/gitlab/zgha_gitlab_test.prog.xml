@@ -29,6 +29,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_PLBU</KEY>
+     <ENTRY>List projects by user</ENTRY>
+     <LENGTH>29</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_PLIS</KEY>
      <ENTRY>List Merge Requests</ENTRY>
      <LENGTH>27</LENGTH>

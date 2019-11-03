@@ -12,6 +12,9 @@ CLASS zcl_gha_gitlab_factory DEFINITION
         !iv_project_id  TYPE i
       RETURNING
         VALUE(ri_notes) TYPE REF TO zif_gha_gitlab_notes .
+    CLASS-METHODS get_projects
+      RETURNING
+        VALUE(ri_instance) TYPE REF TO zif_gha_gitlab_projects .
   PROTECTED SECTION.
   PRIVATE SECTION.
 ENDCLASS.
@@ -31,6 +34,13 @@ CLASS ZCL_GHA_GITLAB_FACTORY IMPLEMENTATION.
   METHOD get_notes.
 
     ri_notes = NEW zcl_gha_gitlab_notes( iv_project_id ).
+
+  ENDMETHOD.
+
+
+  METHOD get_projects.
+
+    ri_instance = NEW zcl_gha_gitlab_projects( ).
 
   ENDMETHOD.
 ENDCLASS.
