@@ -90,7 +90,7 @@ CLASS ZCL_AGCI_ABAPGIT_UTILS IMPLEMENTATION.
     ENDIF.
 
     ASSERT rs_checks-transport-required = abap_false.
-*      rs_checks-transport-transport = 'SOMETHING'.
+* todo, set rs_checks-transport-transport to transport number if required.
 
   ENDMETHOD.
 
