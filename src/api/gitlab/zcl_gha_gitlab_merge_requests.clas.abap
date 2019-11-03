@@ -36,6 +36,7 @@ CLASS ZCL_GHA_GITLAB_MERGE_REQUESTS IMPLEMENTATION.
         sha           = lo_json->value( |/{ lv_member }/sha| )
         target_branch = lo_json->value( |/{ lv_member }/target_branch| )
         source_branch = lo_json->value( |/{ lv_member }/source_branch| )
+        work_in_progress = lo_json->value( |/{ lv_member }/work_in_progress| )
         ) TO rt_list.
     ENDLOOP.
 
@@ -47,6 +48,8 @@ CLASS ZCL_GHA_GITLAB_MERGE_REQUESTS IMPLEMENTATION.
 * todo: move IV_PROJECT_ID to constructor?
 
     IF NOT iv_state IS INITIAL.
+* todo, provide constants?
+      ASSERT iv_state = 'opened' OR iv_state = 'closed' OR iv_state = 'locked' OR iv_state = 'merged'.
       DATA(lv_query) = |?state={ iv_state }|.
     ENDIF.
 
