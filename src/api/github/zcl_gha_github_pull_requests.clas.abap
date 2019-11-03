@@ -62,10 +62,16 @@ CLASS ZCL_GHA_GITHUB_PULL_REQUESTS IMPLEMENTATION.
         state    = lo_json->value( |/{ lv_member }/state| )
         html_url = lo_json->value( |/{ lv_member }/html_url| )
         body     = lo_json->value( |/{ lv_member }/body| )
-        base_ref = lo_json->value( |/{ lv_member }/base/ref| )
-        base_sha = lo_json->value( |/{ lv_member }/base/sha| )
-        head_ref = lo_json->value( |/{ lv_member }/head/ref| )
-        head_sha = lo_json->value( |/{ lv_member }/head/sha| )
+        base = VALUE #(
+          ref       = lo_json->value( |/{ lv_member }/base/ref| )
+          html_url  = lo_json->value( |/{ lv_member }/base/repo/html_url| )
+          clone_url = lo_json->value( |/{ lv_member }/base/repo/clone_url| )
+          sha       = lo_json->value( |/{ lv_member }/base/sha| ) )
+        head = VALUE #(
+          ref       = lo_json->value( |/{ lv_member }/head/ref| )
+          html_url  = lo_json->value( |/{ lv_member }/head/repo/html_url| )
+          clone_url = lo_json->value( |/{ lv_member }/head/repo/clone_url| )
+          sha       = lo_json->value( |/{ lv_member }/head/sha| ) )
         ) TO rt_list.
     ENDLOOP.
 
