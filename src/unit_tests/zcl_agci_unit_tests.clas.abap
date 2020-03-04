@@ -33,7 +33,6 @@ CLASS zcl_agci_unit_tests DEFINITION
 
     METHODS analyze_result
       IMPORTING
-        !is_tadir       TYPE tadir
         !io_result      TYPE REF TO cl_saunit_internal_result
       RETURNING
         VALUE(rt_tests) TYPE ty_tests .
@@ -171,9 +170,7 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
 
     ev_has_skipped_tests = lo_casted->f_task_data-info-has_skipped.
 
-    et_tests = analyze_result(
-      is_tadir  = is_tadir
-      io_result = lo_casted ).
+    et_tests = analyze_result( lo_casted ).
 
   ENDMETHOD.
 ENDCLASS.
