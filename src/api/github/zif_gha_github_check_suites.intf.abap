@@ -7,7 +7,7 @@ INTERFACE zif_gha_github_check_suites
            conclusion TYPE string,
          END OF ty_suite.
 
-  TYPES: ty_suites TYPE STANDARD TABLE OF ty_suite WITH DEFAULT KEY.
+  TYPES: ty_suites TYPE STANDARD TABLE OF ty_suite WITH EMPTY KEY.
 
   METHODS list
     IMPORTING
