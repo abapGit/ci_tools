@@ -45,7 +45,7 @@ FORM run RAISING zcx_abapgit_exception.
             lv_block_total = lv_block_total + ls_coverage-not_executed.
           WHEN 'Statement Coverage'.
             lv_statement_executed = lv_statement_executed + ls_coverage-executed.
-            lv_statement_total = lv_statement_total + ls_coverage-executed + ls_coverage-not_executed..
+            lv_statement_total = lv_statement_total + ls_coverage-executed + ls_coverage-not_executed.
         ENDCASE.
       ENDLOOP.
 
@@ -54,15 +54,14 @@ FORM run RAISING zcx_abapgit_exception.
     WRITE: /.
   ENDLOOP.
 
-
   IF p_cov = abap_true.
     lv_branch_procentage = lv_branch_executed / lv_branch_total.
     lv_block_procentage = lv_block_executed / lv_block_total.
     lv_statement_procentage = lv_statement_executed / lv_statement_total.
 
-    WRITE:/ `Branch Executed :          `, lv_branch_executed, `/`, lv_branch_total,  lv_branch_procentage, `%` .
-    WRITE:/ `Processing block Executed :`, lv_block_executed, `/`, lv_block_total, lv_block_procentage, `%`.
-    WRITE:/ `Statement Executed :       `, lv_statement_executed, `/`, lv_statement_total, lv_statement_procentage, `%`.
+    WRITE:/ `Branch Executed :           `, lv_branch_executed, `/`, lv_branch_total,  lv_branch_procentage, `%`.
+    WRITE:/ `Processing block Executed : `, lv_block_executed, `/`, lv_block_total, lv_block_procentage, `%`.
+    WRITE:/ `Statement Executed :        `, lv_statement_executed, `/`, lv_statement_total, lv_statement_procentage, `%`.
   ENDIF.
 
 ENDFORM.
