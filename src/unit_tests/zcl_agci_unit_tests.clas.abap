@@ -60,42 +60,42 @@ CLASS zcl_agci_unit_tests DEFINITION
         VALUE(rs_cov_result) TYPE ty_cov_result
       RAISING
         zcx_abapgit_exception .
-protected section.
+  PROTECTED SECTION.
 
-  methods CALC_COVERAGE_PCT
-    importing
-      !IT_RESULTS type TY_RESULTS
-    returning
-      value(RS_COVERAGE_PCT) type TY_COVERAGE_PCT_ST .
-  methods ANALYZE_RESULT
-    importing
-      !IO_RESULT type ref to CL_SAUNIT_INTERNAL_RESULT
-    returning
-      value(RT_TESTS) type TY_TESTS .
-  methods GET_RUNNER
-    importing
-      !IV_COVERAGE type ABAP_BOOL default ABAP_FALSE
-    returning
-      value(RO_RUNNER) type ref to CL_AUCV_TEST_RUNNER_ABSTRACT .
-  methods RUN_COVERAGE
-    importing
-      !IS_TADIR type TADIR
-    exporting
-      !ET_TESTS type TY_TESTS
-      !EV_HAS_SKIPPED_TESTS type ABAP_BOOL
-      !ET_COVERAGES type TY_COVERAGE_TT .
-  methods RUN_NORMAL
-    importing
-      !IS_TADIR type TADIR
-    exporting
-      !ET_TESTS type TY_TESTS
-      !EV_HAS_SKIPPED_TESTS type ABAP_BOOL .
-  methods HAS_TESTS
-    importing
-      !IS_TADIR type TADIR
-    returning
-      value(RV_HAS_TESTS) type ABAP_BOOL .
-private section.
+    METHODS calc_coverage_pct
+      IMPORTING
+        !it_results            TYPE ty_results
+      RETURNING
+        VALUE(rs_coverage_pct) TYPE ty_coverage_pct_st .
+    METHODS analyze_result
+      IMPORTING
+        !io_result      TYPE REF TO cl_saunit_internal_result
+      RETURNING
+        VALUE(rt_tests) TYPE ty_tests .
+    METHODS get_runner
+      IMPORTING
+        !iv_coverage     TYPE abap_bool DEFAULT abap_false
+      RETURNING
+        VALUE(ro_runner) TYPE REF TO cl_aucv_test_runner_abstract .
+    METHODS run_coverage
+      IMPORTING
+        !is_tadir             TYPE tadir
+      EXPORTING
+        !et_tests             TYPE ty_tests
+        !ev_has_skipped_tests TYPE abap_bool
+        !et_coverages         TYPE ty_coverage_tt .
+    METHODS run_normal
+      IMPORTING
+        !is_tadir             TYPE tadir
+      EXPORTING
+        !et_tests             TYPE ty_tests
+        !ev_has_skipped_tests TYPE abap_bool .
+    METHODS has_tests
+      IMPORTING
+        !is_tadir           TYPE tadir
+      RETURNING
+        VALUE(rv_has_tests) TYPE abap_bool .
+  PRIVATE SECTION.
 ENDCLASS.
 
 
