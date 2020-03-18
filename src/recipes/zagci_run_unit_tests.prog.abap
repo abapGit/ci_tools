@@ -9,13 +9,13 @@ START-OF-SELECTION.
 
 FORM run RAISING zcx_abapgit_exception.
 
-  DATA: lv_branch_executed      TYPE i,
+  DATA: lv_branch_exe           TYPE i,
         lv_branch_total         TYPE i,
         lv_branch_procentage    TYPE decfloat16,
-        lv_block_executed       TYPE i,
+        lv_block_exe            TYPE i,
         lv_block_total          TYPE i,
         lv_block_procentage     TYPE decfloat16,
-        lv_statement_executed   TYPE i,
+        lv_statement_exe        TYPE i,
         lv_statement_total      TYPE i,
         lv_statement_procentage TYPE decfloat16.
 
@@ -38,13 +38,13 @@ FORM run RAISING zcx_abapgit_exception.
       LOOP AT ls_result-coverages INTO DATA(ls_coverage).
         CASE ls_coverage-type.
           WHEN 'Branch Coverage'.
-            lv_branch_executed = lv_branch_executed + ls_coverage-executed.
+            lv_branch_exe = lv_branch_exe + ls_coverage-executed.
             lv_branch_total = lv_branch_total + ls_coverage-executed + ls_coverage-not_executed.
           WHEN 'Processing Block Coverage'.
-            lv_block_executed = lv_block_executed + ls_coverage-executed.
+            lv_block_exe = lv_block_exe + ls_coverage-executed.
             lv_block_total = lv_block_total + ls_coverage-not_executed.
           WHEN 'Statement Coverage'.
-            lv_statement_executed = lv_statement_executed + ls_coverage-executed.
+            lv_statement_exe = lv_statement_exe + ls_coverage-executed.
             lv_statement_total = lv_statement_total + ls_coverage-executed + ls_coverage-not_executed.
         ENDCASE.
       ENDLOOP.
@@ -55,13 +55,13 @@ FORM run RAISING zcx_abapgit_exception.
   ENDLOOP.
 
   IF p_cov = abap_true.
-    lv_branch_procentage = lv_branch_executed / lv_branch_total.
-    lv_block_procentage = lv_block_executed / lv_block_total.
-    lv_statement_procentage = lv_statement_executed / lv_statement_total.
+    lv_branch_procentage = lv_branch_exe / lv_branch_total.
+    lv_block_procentage = lv_block_exe / lv_block_total.
+    lv_statement_procentage = lv_statement_exe / lv_statement_total.
 
-    WRITE:/ `Branch Executed :           `, lv_branch_executed, `/`, lv_branch_total,  lv_branch_procentage, `%`.
-    WRITE:/ `Processing block Executed : `, lv_block_executed, `/`, lv_block_total, lv_block_procentage, `%`.
-    WRITE:/ `Statement Executed :        `, lv_statement_executed, `/`, lv_statement_total, lv_statement_procentage, `%`.
+    WRITE: / `Branch Executed :          `, lv_branch_exe, `/`, lv_branch_total,  lv_branch_procentage, `%`.
+    WRITE: / `Processing block Executed :`, lv_block_exe, `/`, lv_block_total, lv_block_procentage, `%`.
+    WRITE: / `Statement Executed :       `, lv_statement_exe, `/`, lv_statement_total, lv_statement_procentage, `%`.
   ENDIF.
 
 ENDFORM.
