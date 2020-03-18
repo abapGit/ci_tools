@@ -14,15 +14,33 @@ CLASS zcl_agci_unit_tests DEFINITION
     TYPES:
       ty_tests TYPE STANDARD TABLE OF ty_test WITH EMPTY KEY .
     TYPES:
+      BEGIN OF ty_coverage_st,
+        object       TYPE sobj_name,
+        executed     TYPE i,
+        not_executed TYPE i,
+        percentage   TYPE decfloat16,
+        type         TYPE string,
+      END OF ty_coverage_st .
+    TYPES:
+      ty_coverage_tt TYPE STANDARD TABLE OF ty_coverage_st WITH EMPTY KEY .
+    TYPES:
       BEGIN OF ty_result,
         tadir       TYPE tadir,
         has_skipped TYPE abap_bool,
         tests       TYPE ty_tests,
+        coverages   TYPE ty_coverage_tt,
       END OF ty_result .
     TYPES:
       ty_results TYPE STANDARD TABLE OF ty_result WITH EMPTY KEY .
 
     METHODS run
+      IMPORTING
+        !iv_devclass      TYPE devclass
+      RETURNING
+        VALUE(rt_results) TYPE ty_results
+      RAISING
+        zcx_abapgit_exception .
+    METHODS run_with_coverage
       IMPORTING
         !iv_devclass      TYPE devclass
       RETURNING
@@ -41,6 +59,13 @@ CLASS zcl_agci_unit_tests DEFINITION
         !iv_coverage     TYPE abap_bool DEFAULT abap_false
       RETURNING
         VALUE(ro_runner) TYPE REF TO cl_aucv_test_runner_abstract .
+    METHODS run_coverage
+      IMPORTING
+        !is_tadir             TYPE tadir
+      EXPORTING
+        !et_tests             TYPE ty_tests
+        !ev_has_skipped_tests TYPE abap_bool
+        !et_coverages         TYPE ty_coverage_tt .
     METHODS run_normal
       IMPORTING
         !is_tadir             TYPE tadir
@@ -151,6 +176,43 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
   ENDMETHOD.
 
 
+  METHOD run_coverage.
+
+    CONSTANTS: lc_harmless TYPE saunit_d_allowed_risk_level VALUE 11,
+               lc_medium   TYPE saunit_d_allowed_rt_duration VALUE 24.
+
+    DATA: lo_casted             TYPE REF TO cl_saunit_internal_result,
+          lo_cvrg_rslt_provider TYPE REF TO if_aucv_cvrg_rslt_provider.
+
+    get_runner( abap_true )->run_for_program_keys(
+      EXPORTING
+        i_limit_on_duration_category = lc_medium
+        i_limit_on_risk_level        = lc_harmless
+        i_program_keys               = VALUE #( ( CORRESPONDING #( is_tadir MAPPING obj_type = object ) ) )
+      IMPORTING
+        e_aunit_result               = DATA(li_aunit)
+        e_coverage_result            = lo_cvrg_rslt_provider ).
+
+    DATA(lo_result) = lo_cvrg_rslt_provider->build_coverage_result( ).
+
+    LOOP AT lo_result->get_coverages( ) INTO DATA(ls_coverages).
+      INSERT VALUE #( object       = is_tadir-obj_name
+                      executed     = ls_coverages->get_executed( )
+                      not_executed = ls_coverages->get_not_executed( )
+                      percentage   = ls_coverages->get_percentage( )
+                      type         = ls_coverages->type->text
+                      ) INTO TABLE et_coverages.
+    ENDLOOP.
+
+    lo_casted ?= li_aunit.
+
+    ev_has_skipped_tests = lo_casted->f_task_data-info-has_skipped.
+
+    et_tests = analyze_result( lo_casted ).
+
+  ENDMETHOD.
+
+
   METHOD run_normal.
 
     CONSTANTS: lc_harmless TYPE saunit_d_allowed_risk_level VALUE 11,
@@ -171,6 +233,32 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
     ev_has_skipped_tests = lo_casted->f_task_data-info-has_skipped.
 
     et_tests = analyze_result( lo_casted ).
+
+  ENDMETHOD.
+
+
+  METHOD run_with_coverage.
+
+    DATA(lt_tadir) = zcl_abapgit_factory=>get_tadir( )->read( iv_devclass ).
+    DELETE lt_tadir WHERE object <> 'CLAS' AND object <> 'PROG'.
+
+    LOOP AT lt_tadir INTO DATA(ls_tadir).
+
+      run_coverage(
+        EXPORTING
+          is_tadir             = CORRESPONDING #( ls_tadir )
+        IMPORTING
+          et_tests             = DATA(lt_tests)
+          ev_has_skipped_tests = DATA(lv_has_skipped)
+          et_coverages         = DATA(lt_coverages) ).
+
+      APPEND VALUE #(
+        tadir       = CORRESPONDING #( ls_tadir )
+        has_skipped = lv_has_skipped
+        tests       = lt_tests
+        coverages   = lt_coverages ) TO rt_results.
+
+    ENDLOOP.
 
   ENDMETHOD.
 ENDCLASS.
