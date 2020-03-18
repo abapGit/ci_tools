@@ -17,10 +17,22 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_COV</KEY>
+     <ENTRY>Test incl. coverage</ENTRY>
+     <LENGTH>27</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_DEVC</KEY>
      <ENTRY>.</ENTRY>
-     <LENGTH>9</LENGTH>
+     <LENGTH>15</LENGTH>
      <SPLIT>D</SPLIT>
+    </item>
+    <item>
+     <ID>S</ID>
+     <KEY>P_UNIT</KEY>
+     <ENTRY>Test unit tests</ENTRY>
+     <LENGTH>23</LENGTH>
     </item>
    </TPOOL>
   </asx:values>
