@@ -161,10 +161,9 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
       ENDLOOP.
     ENDLOOP.
 
-    rs_coverage_pct-branch_percentage = lv_branch_exe / lv_branch_total * 100.
-    rs_coverage_pct-block_percentage = lv_block_exe / lv_block_total * 100.
-    rs_coverage_pct-statement_percentage = lv_statement_exe / lv_statement_total * 100.
-
+    rs_coverage_pct-branch_percentage = round( val = lv_branch_exe / lv_branch_total * 100 dec = 2 ).
+    rs_coverage_pct-block_percentage = round( val = lv_block_exe / lv_block_total * 100 dec = 2 ).
+    rs_coverage_pct-statement_percentage = round( val = lv_statement_exe / lv_statement_total * 100 dec = 2 ).
 
   ENDMETHOD.
 
@@ -202,7 +201,7 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
   METHOD run.
 
     DATA(lt_tadir) = zcl_abapgit_factory=>get_tadir( )->read( iv_devclass ).
-    DELETE lt_tadir WHERE object <> 'CLAS'.
+    DELETE lt_tadir WHERE object <> 'CLAS' AND object <> 'PROG' AND object <> 'FUGR'.
 
     LOOP AT lt_tadir INTO DATA(ls_tadir).
 
@@ -291,7 +290,7 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
   METHOD run_with_coverage.
 
     DATA(lt_tadir) = zcl_abapgit_factory=>get_tadir( )->read( iv_devclass ).
-    DELETE lt_tadir WHERE object <> 'CLAS' AND object <> 'PROG'.
+    DELETE lt_tadir WHERE object <> 'CLAS' AND object <> 'PROG' AND object <> 'FUGR'.
 
     LOOP AT lt_tadir INTO DATA(ls_tadir).
 
