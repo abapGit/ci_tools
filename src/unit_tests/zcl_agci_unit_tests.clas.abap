@@ -24,6 +24,13 @@ CLASS zcl_agci_unit_tests DEFINITION
     TYPES:
       ty_coverage_tt TYPE STANDARD TABLE OF ty_coverage_st WITH EMPTY KEY .
     TYPES:
+      BEGIN OF ty_coverage_pct_st,
+        branch_percentage    TYPE decfloat16,
+        block_percentage     TYPE decfloat16,
+        statement_percentage TYPE decfloat16,
+      END OF ty_coverage_pct_st.
+
+    TYPES:
       BEGIN OF ty_result,
         tadir       TYPE tadir,
         has_skipped TYPE abap_bool,
@@ -32,6 +39,12 @@ CLASS zcl_agci_unit_tests DEFINITION
       END OF ty_result .
     TYPES:
       ty_results TYPE STANDARD TABLE OF ty_result WITH EMPTY KEY .
+
+    TYPES:
+      BEGIN OF ty_cov_result,
+        coverage TYPE ty_coverage_pct_st,
+        results  TYPE ty_results,
+      END OF ty_cov_result.
 
     METHODS run
       IMPORTING
@@ -42,42 +55,47 @@ CLASS zcl_agci_unit_tests DEFINITION
         zcx_abapgit_exception .
     METHODS run_with_coverage
       IMPORTING
-        !iv_devclass      TYPE devclass
+        !iv_devclass         TYPE devclass
       RETURNING
-        VALUE(rt_results) TYPE ty_results
+        VALUE(rs_cov_result) TYPE ty_cov_result
       RAISING
         zcx_abapgit_exception .
-  PROTECTED SECTION.
+protected section.
 
-    METHODS analyze_result
-      IMPORTING
-        !io_result      TYPE REF TO cl_saunit_internal_result
-      RETURNING
-        VALUE(rt_tests) TYPE ty_tests .
-    METHODS get_runner
-      IMPORTING
-        !iv_coverage     TYPE abap_bool DEFAULT abap_false
-      RETURNING
-        VALUE(ro_runner) TYPE REF TO cl_aucv_test_runner_abstract .
-    METHODS run_coverage
-      IMPORTING
-        !is_tadir             TYPE tadir
-      EXPORTING
-        !et_tests             TYPE ty_tests
-        !ev_has_skipped_tests TYPE abap_bool
-        !et_coverages         TYPE ty_coverage_tt .
-    METHODS run_normal
-      IMPORTING
-        !is_tadir             TYPE tadir
-      EXPORTING
-        !et_tests             TYPE ty_tests
-        !ev_has_skipped_tests TYPE abap_bool .
-    METHODS has_tests
-      IMPORTING
-        !is_tadir           TYPE tadir
-      RETURNING
-        VALUE(rv_has_tests) TYPE abap_bool .
-  PRIVATE SECTION.
+  methods CALC_COVERAGE_PCT
+    importing
+      !IT_RESULTS type TY_RESULTS
+    returning
+      value(RS_COVERAGE_PCT) type TY_COVERAGE_PCT_ST .
+  methods ANALYZE_RESULT
+    importing
+      !IO_RESULT type ref to CL_SAUNIT_INTERNAL_RESULT
+    returning
+      value(RT_TESTS) type TY_TESTS .
+  methods GET_RUNNER
+    importing
+      !IV_COVERAGE type ABAP_BOOL default ABAP_FALSE
+    returning
+      value(RO_RUNNER) type ref to CL_AUCV_TEST_RUNNER_ABSTRACT .
+  methods RUN_COVERAGE
+    importing
+      !IS_TADIR type TADIR
+    exporting
+      !ET_TESTS type TY_TESTS
+      !EV_HAS_SKIPPED_TESTS type ABAP_BOOL
+      !ET_COVERAGES type TY_COVERAGE_TT .
+  methods RUN_NORMAL
+    importing
+      !IS_TADIR type TADIR
+    exporting
+      !ET_TESTS type TY_TESTS
+      !EV_HAS_SKIPPED_TESTS type ABAP_BOOL .
+  methods HAS_TESTS
+    importing
+      !IS_TADIR type TADIR
+    returning
+      value(RV_HAS_TESTS) type ABAP_BOOL .
+private section.
 ENDCLASS.
 
 
@@ -114,6 +132,39 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
         ENDLOOP.
       ENDLOOP.
     ENDLOOP.
+
+  ENDMETHOD.
+
+
+  METHOD calc_coverage_pct.
+
+    DATA: lv_branch_exe      TYPE i,
+          lv_branch_total    TYPE i,
+          lv_block_exe       TYPE i,
+          lv_block_total     TYPE i,
+          lv_statement_exe   TYPE i,
+          lv_statement_total TYPE i.
+
+    LOOP AT it_results INTO DATA(ls_result).
+      LOOP AT ls_result-coverages INTO DATA(ls_coverage).
+        CASE ls_coverage-type.
+          WHEN 'Branch Coverage'.
+            lv_branch_exe = lv_branch_exe + ls_coverage-executed.
+            lv_branch_total = lv_branch_total + ls_coverage-executed + ls_coverage-not_executed.
+          WHEN 'Processing Block Coverage'.
+            lv_block_exe = lv_block_exe + ls_coverage-executed.
+            lv_block_total = lv_block_total + ls_coverage-not_executed.
+          WHEN 'Statement Coverage'.
+            lv_statement_exe = lv_statement_exe + ls_coverage-executed.
+            lv_statement_total = lv_statement_total + ls_coverage-executed + ls_coverage-not_executed.
+        ENDCASE.
+      ENDLOOP.
+    ENDLOOP.
+
+    rs_coverage_pct-branch_percentage = lv_branch_exe / lv_branch_total * 100.
+    rs_coverage_pct-block_percentage = lv_block_exe / lv_block_total * 100.
+    rs_coverage_pct-statement_percentage = lv_statement_exe / lv_statement_total * 100.
+
 
   ENDMETHOD.
 
@@ -256,9 +307,11 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
         tadir       = CORRESPONDING #( ls_tadir )
         has_skipped = lv_has_skipped
         tests       = lt_tests
-        coverages   = lt_coverages ) TO rt_results.
+        coverages   = lt_coverages ) TO rs_cov_result-results.
 
     ENDLOOP.
+
+    rs_cov_result-coverage = calc_coverage_pct( rs_cov_result-results ).
 
   ENDMETHOD.
 ENDCLASS.

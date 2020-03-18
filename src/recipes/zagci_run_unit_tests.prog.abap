@@ -9,23 +9,14 @@ START-OF-SELECTION.
 
 FORM run RAISING zcx_abapgit_exception.
 
-  DATA: lv_branch_exe           TYPE i,
-        lv_branch_total         TYPE i,
-        lv_branch_procentage    TYPE decfloat16,
-        lv_block_exe            TYPE i,
-        lv_block_total          TYPE i,
-        lv_block_procentage     TYPE decfloat16,
-        lv_statement_exe        TYPE i,
-        lv_statement_total      TYPE i,
-        lv_statement_procentage TYPE decfloat16.
-
   IF p_unit = abap_true.
-    DATA(lt_result) = NEW zcl_agci_unit_tests( )->run( p_devc ).
+    DATA(lt_results) = NEW zcl_agci_unit_tests( )->run( p_devc ).
   ELSE.
-    lt_result = NEW zcl_agci_unit_tests( )->run_with_coverage( p_devc ).
+    DATA(ls_cov_result) = NEW zcl_agci_unit_tests( )->run_with_coverage( p_devc ).
+    lt_results = ls_cov_result-results.
   ENDIF.
 
-  LOOP AT lt_result INTO DATA(ls_result).
+  LOOP AT lt_results INTO DATA(ls_result).
     WRITE: / ls_result-tadir-obj_name, ls_result-tadir-devclass, ls_result-has_skipped.
 
     LOOP AT ls_result-tests INTO DATA(ls_test).
@@ -35,33 +26,15 @@ FORM run RAISING zcx_abapgit_exception.
         WRITE: / icon_red_light, ls_test-class_name, ls_test-method_name, ls_test-kind.
       ENDIF.
       WRITE: /.
-      LOOP AT ls_result-coverages INTO DATA(ls_coverage).
-        CASE ls_coverage-type.
-          WHEN 'Branch Coverage'.
-            lv_branch_exe = lv_branch_exe + ls_coverage-executed.
-            lv_branch_total = lv_branch_total + ls_coverage-executed + ls_coverage-not_executed.
-          WHEN 'Processing Block Coverage'.
-            lv_block_exe = lv_block_exe + ls_coverage-executed.
-            lv_block_total = lv_block_total + ls_coverage-not_executed.
-          WHEN 'Statement Coverage'.
-            lv_statement_exe = lv_statement_exe + ls_coverage-executed.
-            lv_statement_total = lv_statement_total + ls_coverage-executed + ls_coverage-not_executed.
-        ENDCASE.
-      ENDLOOP.
-
     ENDLOOP.
 
     WRITE: /.
   ENDLOOP.
 
   IF p_cov = abap_true.
-    lv_branch_procentage = lv_branch_exe / lv_branch_total.
-    lv_block_procentage = lv_block_exe / lv_block_total.
-    lv_statement_procentage = lv_statement_exe / lv_statement_total.
-
-    WRITE: / `Branch Executed :          `, lv_branch_exe, `/`, lv_branch_total,  lv_branch_procentage, `%`.
-    WRITE: / `Processing block Executed :`, lv_block_exe, `/`, lv_block_total, lv_block_procentage, `%`.
-    WRITE: / `Statement Executed :       `, lv_statement_exe, `/`, lv_statement_total, lv_statement_procentage, `%`.
+    WRITE: / `Branch Executed :          `, ls_cov_result-coverage-branch_percentage, `%`.
+    WRITE: / `Processing block Executed :`, ls_cov_result-coverage-block_percentage, `%`.
+    WRITE: / `Statement Executed :       `, ls_cov_result-coverage-statement_percentage, `%`.
   ENDIF.
 
 ENDFORM.
