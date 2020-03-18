@@ -23,6 +23,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_PULL</KEY>
+     <ENTRY>Pull code</ENTRY>
+     <LENGTH>17</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_REPO</KEY>
      <ENTRY>Repo</ENTRY>
      <LENGTH>12</LENGTH>
