@@ -64,9 +64,7 @@ CLASS ZCL_AGCI_UNIT_TEST_PDF IMPLEMENTATION.
         send_error       = 3
         user_canceled    = 4
         OTHERS           = 5.
-    IF sy-subrc <> 0.
-      BREAK-POINT.
-    ENDIF.
+    ASSERT sy-subrc <> 0 AND sy-subrc <> 0.
 
   ENDMETHOD.
 
