@@ -30,6 +30,12 @@
     </item>
     <item>
      <ID>S</ID>
+     <KEY>P_PDF</KEY>
+     <ENTRY>PDF</ENTRY>
+     <LENGTH>11</LENGTH>
+    </item>
+    <item>
+     <ID>S</ID>
      <KEY>P_UNIT</KEY>
      <ENTRY>Test unit tests</ENTRY>
      <LENGTH>23</LENGTH>
