@@ -5,6 +5,13 @@ CLASS zcl_agci_abapgit_utils DEFINITION
 
   PUBLIC SECTION.
 
+    METHODS find_repo_by_package
+      IMPORTING
+        !iv_package    TYPE devclass
+      RETURNING
+        VALUE(ro_repo) TYPE REF TO zcl_abapgit_repo_online
+      RAISING
+        zcx_abapgit_exception .
     METHODS find_repo_by_url
       IMPORTING
         !iv_url1       TYPE string
@@ -45,6 +52,23 @@ ENDCLASS.
 
 
 CLASS ZCL_AGCI_ABAPGIT_UTILS IMPLEMENTATION.
+
+
+  METHOD find_repo_by_package.
+
+    DATA(lt_list) = zcl_abapgit_repo_srv=>get_instance( )->list( ).
+
+    LOOP AT lt_list INTO DATA(lo_repo).
+      IF lo_repo->is_offline( ) = abap_false.
+        DATA(lo_online) = CAST zcl_abapgit_repo_online( lo_repo ).
+        IF lo_online->get_package( ) = iv_package.
+          ro_repo = lo_online.
+          RETURN.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+
+  ENDMETHOD.
 
 
   METHOD find_repo_by_url.

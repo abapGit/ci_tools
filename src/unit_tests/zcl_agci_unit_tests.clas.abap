@@ -25,9 +25,9 @@ CLASS zcl_agci_unit_tests DEFINITION
       ty_coverage_tt TYPE STANDARD TABLE OF ty_coverage_st WITH EMPTY KEY .
     TYPES:
       BEGIN OF ty_coverage_pct_st,
-        branch_percentage    TYPE decfloat16,
-        block_percentage     TYPE decfloat16,
-        statement_percentage TYPE decfloat16,
+        branch_percentage    TYPE p LENGTH 5 DECIMALS 2,
+        block_percentage     TYPE p LENGTH 5 DECIMALS 2,
+        statement_percentage TYPE p LENGTH 5 DECIMALS 2,
       END OF ty_coverage_pct_st.
 
     TYPES:
@@ -83,7 +83,9 @@ CLASS zcl_agci_unit_tests DEFINITION
       EXPORTING
         !et_tests             TYPE ty_tests
         !ev_has_skipped_tests TYPE abap_bool
-        !et_coverages         TYPE ty_coverage_tt .
+        !et_coverages         TYPE ty_coverage_tt
+      RAISING
+        cx_scv_call_error .
     METHODS run_normal
       IMPORTING
         !is_tadir             TYPE tadir
@@ -161,9 +163,9 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
       ENDLOOP.
     ENDLOOP.
 
-    rs_coverage_pct-branch_percentage = round( val = lv_branch_exe / lv_branch_total * 100 dec = 2 ).
-    rs_coverage_pct-block_percentage = round( val = lv_block_exe / lv_block_total * 100 dec = 2 ).
-    rs_coverage_pct-statement_percentage = round( val = lv_statement_exe / lv_statement_total * 100 dec = 2 ).
+    rs_coverage_pct-branch_percentage = lv_branch_exe / lv_branch_total * 100.
+    rs_coverage_pct-block_percentage = lv_block_exe / lv_block_total * 100.
+    rs_coverage_pct-statement_percentage = lv_statement_exe / lv_statement_total * 100.
 
   ENDMETHOD.
 
@@ -294,13 +296,17 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
 
     LOOP AT lt_tadir INTO DATA(ls_tadir).
 
-      run_coverage(
-        EXPORTING
-          is_tadir             = CORRESPONDING #( ls_tadir )
-        IMPORTING
-          et_tests             = DATA(lt_tests)
-          ev_has_skipped_tests = DATA(lv_has_skipped)
-          et_coverages         = DATA(lt_coverages) ).
+      TRY.
+          run_coverage(
+            EXPORTING
+              is_tadir             = CORRESPONDING #( ls_tadir )
+            IMPORTING
+              et_tests             = DATA(lt_tests)
+              ev_has_skipped_tests = DATA(lv_has_skipped)
+              et_coverages         = DATA(lt_coverages) ).
+        CATCH cx_scv_call_error.
+          CONTINUE.
+      ENDTRY.
 
       APPEND VALUE #(
         tadir       = CORRESPONDING #( ls_tadir )

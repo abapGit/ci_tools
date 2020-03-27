@@ -59,6 +59,4 @@ FORM pdf RAISING zcx_abapgit_exception.
 
   NEW zcl_agci_unit_test_pdf( )->output( p_devc ).
 
-  WRITE 'todo'.
-
 ENDFORM.
