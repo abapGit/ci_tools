@@ -8,13 +8,19 @@
   "dependencies": [
     {
       "url": "https://github.com/abaplint/deps",
-      "folder": "/deps",
+      "folder": "/deps1",
       "files": "/src/**/*.*"
-    }
+    },
+    {
+      "url": "https://github.com/abapGit/abapGit",
+      "folder": "/deps2",
+      "files": "/src/**/*.*"
+    }    
   ],
   "syntax": {
     "version": "v740sp08",
-    "errorNamespace": "^(Z|Y)"
+    "errorNamespace": "^(Z|Y)",
+    "globalConstants": ["icon_green_light", "icon_red_light"]
   },
   "rules": {
     "check_no_handler_pragma": true,
@@ -28,7 +34,7 @@
     "sicf_consistency": true,
     "sql_escape_host_variables": true,
     "try_without_catch": true,
-    "unused_variables": true,
+    "unused_variables": false,
     "xml_consistency": true,
     "allowed_object_naming": true,
     "check_comments": false,
