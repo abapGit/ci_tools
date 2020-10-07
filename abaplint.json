@@ -33,7 +33,7 @@
     "sicf_consistency": true,
     "sql_escape_host_variables": true,
     "try_without_catch": true,
-    "unused_variables": true,
+    "unused_variables": false,
     "xml_consistency": true,
     "allowed_object_naming": true,
     "check_comments": false,
