@@ -19,7 +19,8 @@
   ],
   "syntax": {
     "version": "v740sp08",
-    "errorNamespace": "^(Z|Y)"
+    "errorNamespace": "^(Z|Y)",
+    "globalConstants": ["icon_green_light", "icon_red_light"]
   },
   "rules": {
     "check_no_handler_pragma": true,
