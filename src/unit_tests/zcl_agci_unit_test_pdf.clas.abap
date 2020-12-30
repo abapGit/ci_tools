@@ -81,7 +81,7 @@ CLASS ZCL_AGCI_UNIT_TEST_PDF IMPLEMENTATION.
     DATA(lo_repo) = NEW zcl_agci_abapgit_utils( )->find_repo_by_package( iv_devclass ).
     IF lo_repo IS BOUND.
       ls_info-url = lo_repo->get_url( ).
-      ls_info-branch = lo_repo->get_branch_name( ).
+      ls_info-branch = lo_repo->get_selected_branch( ).
     ENDIF.
 
     call_smartform(
