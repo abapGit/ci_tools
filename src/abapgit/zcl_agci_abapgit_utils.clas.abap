@@ -121,7 +121,7 @@ CLASS ZCL_AGCI_ABAPGIT_UTILS IMPLEMENTATION.
 
   METHOD pull_branch.
 
-    io_repo->set_branch_name( iv_name ).
+    io_repo->select_branch( iv_name ).
 
     DATA(ls_checks) = overwrite_all( io_repo->deserialize_checks( ) ).
 
