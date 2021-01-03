@@ -84,7 +84,7 @@
     "avoid_use": true,
     "begin_end_names": true,
     "check_transformation_exists": true,
-    "check_syntax": false,
+    "check_syntax": true,
     "class_attribute_names": true,
     "cloud_types": true,
     "colon_missing_space": true,
