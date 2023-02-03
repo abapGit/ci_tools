@@ -24,7 +24,7 @@ CLASS zcl_agci_abapgit_utils DEFINITION
       IMPORTING
         !io_repo           TYPE REF TO zcl_abapgit_repo_online
       RETURNING
-        VALUE(rt_branches) TYPE zif_abapgit_definitions=>ty_git_branch_list_tt
+        VALUE(rt_branches) TYPE zif_abapgit_git_definitions=>ty_git_branch_list_tt
       RAISING
         zcx_abapgit_exception .
     METHODS pull_branch
