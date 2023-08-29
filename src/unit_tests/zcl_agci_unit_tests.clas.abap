@@ -85,6 +85,7 @@ CLASS zcl_agci_unit_tests DEFINITION
         !ev_has_skipped_tests TYPE abap_bool
         !et_coverages         TYPE ty_coverage_tt
       RAISING
+        cx_scv_execution_error
         cx_scv_call_error .
     METHODS run_normal
       IMPORTING
@@ -102,7 +103,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
+CLASS zcl_agci_unit_tests IMPLEMENTATION.
 
 
   METHOD analyze_result.
@@ -304,7 +305,7 @@ CLASS ZCL_AGCI_UNIT_TESTS IMPLEMENTATION.
               et_tests             = DATA(lt_tests)
               ev_has_skipped_tests = DATA(lv_has_skipped)
               et_coverages         = DATA(lt_coverages) ).
-        CATCH cx_scv_call_error.
+        CATCH cx_scv_call_error cx_scv_execution_error.
           CONTINUE.
       ENDTRY.
 

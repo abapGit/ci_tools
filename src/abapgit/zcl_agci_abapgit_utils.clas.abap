@@ -51,7 +51,7 @@ ENDCLASS.
 
 
 
-CLASS ZCL_AGCI_ABAPGIT_UTILS IMPLEMENTATION.
+CLASS zcl_agci_abapgit_utils IMPLEMENTATION.
 
 
   METHOD find_repo_by_package.
@@ -131,7 +131,7 @@ CLASS ZCL_AGCI_ABAPGIT_UTILS IMPLEMENTATION.
       is_checks = ls_checks
       ii_log    = lo_log ).
 
-    DATA(lt_status) = io_repo->status( ).
+    DATA(lt_status) = zcl_abapgit_repo_status=>calculate( io_repo ).
 
 * todo, check log and status
 
